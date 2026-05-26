@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#C8132A">
+<title>Tirana Express</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#111;color:#fff;min-height:100vh;padding-bottom:72px;overflow-x:hidden}
+.section{display:none;animation:fadeIn .3s ease}.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hero{position:relative;height:55vw;max-height:320px;min-height:200px;overflow:hidden;background:#222}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0a0a 0%,#3d1010 40%,#C8132A 100%)}
+.hero-placeholder .ph-icon{font-size:4rem;margin-bottom:8px}
+.hero-placeholder .ph-text{color:rgba(255,255,255,.5);font-size:.85rem}
+.hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px 16px 16px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.hero-badge{display:inline-block;background:#C8132A;color:#fff;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:8px}
+.hero-title{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+.hero-title span{color:#F5A623}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.75);margin-top:6px;letter-spacing:.5px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:66px;background:#111;border-top:1px solid #333;display:flex;z-index:100}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;color:#888;font-size:.65rem;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;gap:4px;transition:color .2s}
+.nav-btn .nav-icon{font-size:1.4rem}
+.nav-btn.active{color:#C8132A}
+.content{padding:16px}
+.section-header{padding:20px 16px 8px;display:flex;align-items:center;gap:10px}
+.section-header h2{font-size:1.4rem;font-weight:800}
+.section-header .day-badge{background:#C8132A;color:#fff;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:1px}
+.card{background:#1e1e1e;border:1px solid #2a2a2a;border-radius:14px;padding:16px;margin-bottom:12px}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.card-time{background:#F5A623;color:#111;font-weight:800;font-size:.75rem;padding:3px 10px;border-radius:20px}
+.card-title{font-weight:700;font-size:1rem}
+.card-body{color:#aaa;font-size:.875rem;line-height:1.6}
+.card-tag{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:4px;font-size:.7rem;font-weight:600;background:#2a2a2a;color:#F5A623;text-transform:uppercase;letter-spacing:.5px}
+.placeholder-card{background:#1e1e1e;border:2px dashed #333;border-radius:14px;padding:24px;text-align:center;margin-bottom:12px;color:#555}
+.placeholder-card .ph-emoji{font-size:2.5rem;margin-bottom:8px}
+.placeholder-card p{font-size:.85rem;line-height:1.5}
+.faq-item{background:#1e1e1e;border:1px solid #2a2a2a;border-radius:14px;margin-bottom:10px;overflow:hidden}
+.faq-question{width:100%;background:none;border:none;color:#fff;text-align:left;padding:16px;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-arrow{color:#C8132A;font-size:1.2rem;transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-item.open .faq-answer{max-height:600px}
+.faq-answer-inner{padding:0 16px 16px;border-top:1px solid #2a2a2a}
+.faq-answer-inner p{color:#aaa;font-size:.875rem;line-height:1.6;margin-top:12px}
+.answer-option{display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding:8px;background:#252525;border-radius:8px}
+.answer-option .ao-emoji{font-size:1.2rem;flex-shrink:0;margin-top:1px}
+.answer-option .ao-text{color:#ddd;font-size:.85rem;line-height:1.4}
+.intro-card{background:linear-gradient(135deg,#1a0808,#2d0f0f);border:1px solid rgba(200,19,42,.2);border-radius:14px;padding:16px;margin-bottom:16px;text-align:center}
+.intro-card p{color:#ccc;font-size:.875rem;line-height:1.6}
+.anni-section{display:flex;align-items:center;justify-content:center;gap:12px;padding:16px;margin-bottom:4px}
+.anni-stars{color:#F5A623;font-size:1rem;letter-spacing:2px}
+.tappa{padding:6px 0;border-bottom:1px solid #2a2a2a;display:flex;align-items:flex-start;gap:8px}
+.tappa:last-child{border-bottom:none}
+.tappa-icon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.tappa-text{font-size:.85rem;color:#ddd;line-height:1.4}
+.tappa-note{font-size:.75rem;color:#888;font-style:italic;margin-top:2px}
+</style>
+</head>
+<body>
+<section id="home" class="section active">
+  <div class="hero">
+        <img src="https://drive.usercontent.google.com/download?id=1AfxV2utq0-UJ1877hrgb3WMB_CMDMxcP&export=view" alt="Tirana Express">    <div class="hero-overlay">      <div class="hero-badge">🇦🇱 10 anni • Tirana</div>
+      <div class="hero-title">TIRANA<br><span>EXPRESS</span></div>
+      <div class="hero-sub">28–29 Maggio 2026 • La sfida ha inizio 🔥</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="anni-section">
+      <span class="anni-stars">★★★★★</span>
+      <span style="color:#F5A623;font-weight:900;font-size:1.1rem">10 ANNI DI TIRANA</span>
+      <span class="anni-stars">★★★★★</span>
+    </div>
+    <div class="intro-card">
+      <p>Benvenuti a <strong style="color:#fff">Tirana Express</strong> —<br>la guida ufficiale (e ironica) per sopravvivere<br>a due giorni di avventura balcanica.</p>
+      <br>
+      <p style="color:#F5A623;font-weight:900;font-size:1.5rem">🎉 Buon Compleanno Sede! 🎉</p>
+      <br>
+      <p style="color:#888;font-size:.8rem">Partner &amp; Associates riuniti per celebrare<br>10 anni di conquiste… e sopravvivenze.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><span style="font-size:1.5rem">📅</span><div class="card-title">Il Programma</div></div>
+      <div class="card-body"><strong style="color:#F5A623">Giorno 1</strong> – Mercoledì 28 Maggio<br><strong style="color:#F5A623">Giorno 2</strong> – Giovedì 29 Maggio<br><br>Usa la navigazione in basso per esplorare il programma giornaliero e le FAQ di sopravvivenza.</div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span style="font-size:1.5rem">⚠️</span><div class="card-title">Regole dell'Avventura</div></div>
+      <div class="card-body">1. Non lamentarti del caldo (o del freddo)<br>2. Il monopattino è sempre un'opzione<br>3. In caso di dubbio: <strong style="color:#F5A623">Delega</strong><br>4. Sorridere è obbligatorio<br>5. Il ristorante lo sceglie il più coraggioso</div>
+    </div>
+  </div>
+</section>
+<section id="day1" class="section">
+  <div class="section-header">
+    <div class="day-badge">DAY 1</div>
+    <h2>28 Maggio 🏛️</h2>
+  </div>
+  <div class="content">
+    <div class="intro-card">
+      <p style="color:#F5A623;font-weight:900;font-size:1.1rem">🏙️ Tour del Cuore di Tirana</p>
+      <br>
+      <p>Un giro tra storia, bunker e cocktail bar.<br>Sopravvivenza garantita (quasi).</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-time">14:30 – 14:45</span>
+        <div class="card-title">🚌 Partenza</div>
+      </div>
+      <div class="card-body">
+        📍 <strong style="color:#fff">Ristorante Oda</strong> → Centro di Tirana<br><br>
+        <span style="color:#F5A623">💡 Pro tip:</span> Scarpe comode obbligatorie. Lo capirai presto.
+      </div>
+      <span class="card-tag">🏁 Inizio</span>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span style="font-size:1.3rem">🗺️</span>
+        <div class="card-title">Tappe Principali</div>
+      </div>
+      <div class="card-body">
+        <div class="tappa">
+          <span class="tappa-icon">🏛️</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Piazza Scanderbeg</strong</div></div>
+          <div class="tappa-note">Statua • Museo Nazionale • Banca d'Albania • Palazzo della Cultura</div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon">🕌</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Moschea Et'hem Bey</strong> + Torre dell'Orologio</div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon">☢️</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Bunk'Art 2</strong></div>
+            <div class="tappa-note">Storia raccontata sottoterra. Letteralmente.</div></div>        </div>
+        <div class="tappa">
+          <span class="tappa-icon">🏛️</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Ministeri</strong></div>
+          <div class="tappa-note">stile neo-rinascimentale italiano</div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon"🌳</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Shëtitorja Murat Toptani</strong></div>
+            <div class="tappa-note">passeggiata alberata</div></div>        </div>
+        <div class="tappa">
+          <span class="tappa-icon">🏰</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Fortezza di Tirana</strong</div>
+          <div class="tappa-note">Area storica e gastronomica</div></div>
+        </div>
+      </div>
+      <span class="card-tag">🏛️ Cultura</span>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span style="font-size:1.3rem">📍</span>
+        <div class="card-title">Soste Previste</div>
+      </div>
+      <div class="card-body">
+        <div class="tappa">
+          <span class="tappa-icon">⛪</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Cattedrale di San Paolo</strong></div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon">△</span>
+          <div><div class="tappa-text"><strong style="color:#fff">La Piramide</strong></div>
+          <div class="tappa-note">Arte o macerie? Decidi tu.</div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon">🏛️</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Kryeministria</strong></div>
+          <div class="tappa-note">Ufficio del PM</div></div>
+        </div>
+        <div class="tappa">
+          <span class="tappa-icon"🪖</span>
+            <div><div class="tappa-text"><strong style="color:#fff">Checkpoint</strong></div>
+            <div class="tappa-note">Bunker • Muro di Berlino • Miniere di Spaç</div></div>        </div>
+        <div class="tappa">
+          <span class="tappa-icon">🍹</span>
+            <div><div class="tappa-text"><strong style="color:#fff">Ish-Blloku</strong></div>
+            <div class="tappa-note">Ex zona proibita. Ora è piena di cocktail bar. Il progresso.</div></div>        </div>
+        <div class="tappa">
+          <span class="tappa-icon">✝️</span>
+          <div><div class="tappa-text"><strong style="color:#fff">Cattedrale Ortodossa</strong> della Resurrezione di Cristo</div></div>
+        </div>
+      </div>
+      <span class="card-tag">🎯 Soste</span>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-time">17:30 – 17:45</span>
+            <div class="card-title">🏛 Rientro all'Istituto Italiano di Cultura</div>      </div>
+      <div class="card-body">
+        📍 <strong style="color:#fff">Istituto Italiano di Cultura</strong><br><br>
+        <span style="color:#F5A623">💡 Pro tip:</span> Conta i passi. Poi siediti e non alzarti più.
+      </div>
+      <span class="card-tag">🏁 Fine Tour</span>
+    </div>
+  </div>
+</section>
+<section id="day2" class="section">
+  <div class="section-header">
+    <div class="day-badge">DAY 2</div>
+    <h2>29 Maggio 🌞</h2>
+  </div>
+  <div class="content">
+<div class="card">
+          <div class="card-header">
+            <span class="card-time">09:15 – 17:00</span>
+            <div class="card-title">🤝 Associate &amp; Partner Meeting</div>
+          </div>
+          <div class="card-body">
+            <div class="tappa"><span class="tappa-icon">📊</span><div><div class="tappa-text"><strong style="color:#fff">Sessioni strategiche</strong></div></div></div>
+            <div class="tappa"><span class="tappa-icon">🛠️</span><div><div class="tappa-text"><strong style="color:#fff">Workshop collaborativi</strong></div></div></div>
+            <div class="tappa"><span class="tappa-icon">🚀</span><div><div class="tappa-text"><strong style="color:#fff">Visione futura e crescita del team</strong></div></div></div>
+          </div>
+          <span class="card-tag">💼 Meeting</span>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-time">13:00 – 14:15</span>
+            <div class="card-title">🍽️ Pranzo</div>
+          </div>
+          <div class="card-body">Momento conviviale dedicato ai partecipanti.</div>
+          <span class="card-tag">🥗 Pausa Pranzo</span>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-time">17:00</span>
+            <div class="card-title">🏁 Chiusura lavori</div>
+          </div>
+          <div class="card-body">
+            <div class="tappa"><span class="tappa-icon">🚌</span><div><div class="tappa-text"><strong style="color:#fff">Trasferimenti in aeroporto</strong></div></div></div>
+            <div class="tappa"><span class="tappa-icon">✈️</span><div><div class="tappa-text"><strong style="color:#fff">Voli di rientro</strong></div></div></div>
+          </div>
+          <span class="card-tag">🏁 Fine Evento</span>
+        </div>
+  </div>
+</section>
+<section id="faq" class="section">
+  <div class="section-header"><h2>❓ FAQ di Sopravvivenza</h2></div>
+  <div class="content">
+    <p style="color:#888;font-size:.8rem;margin-bottom:16px;text-align:center">Le risposte alle domande che nessuno vuole fare… ma tutti pensano.</p>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">✈️ Ho preso l'aereo da un aeroporto e torno da un altro. Come mi sposto?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <p>Ottima domanda, avventuriero della logistica! Ecco le opzioni certificate:</p>
+        <div class="answer-option"><span class="ao-emoji">🛴</span><div class="ao-text"><strong>Monopattino elettrico</strong> — Pratico, ecologico, ottimo per spiegarti ai colleghi al rientro. Richiede equilibrio fisico e mentale.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🐴</span><div class="ao-text"><strong>Prenota un calesse</strong> — Lento ma scenografico. Arriverai con un'ora di ritardo e mille foto meravigliose.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🚕</span><div class="ao-text"><strong>Taxi condiviso</strong> — La variante sociale. Conoscerai almeno tre albanesi che ti consiglieranno il miglior byrek della città.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🚶</span><div class="ao-text"><strong>A piedi</strong> — Non funziona. Ma almeno conti i passi e chiudi gli anelli sull'Apple Watch.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🦅</span><div class="ao-text"><strong>Aquila albanese</strong> — Simbolo nazionale. Purtroppo non effettua prenotazioni su Booking.com.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">📍 La lista dei posti da visitare è lunghissima. Come faccio?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">📤</span><div class="ao-text"><strong>Delega.</strong> Hai colleghi per questo. È proprio per questo che siete un team.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🎲</span><div class="ao-text"><strong>Tira i dadi</strong> — Approccio scientifico e imparziale. La colpa è della statistica, non tua.</div></div>
+        <div class="answer-option"><span class="ao-emoji">📱</span><div class="ao-text"><strong>Chiedi a ChatGPT</strong> — Tanto lo sai che lo farai comunque.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">🍽️ Cosa mangio a Tirana?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">🥙</span><div class="ao-text"><strong>Byrek</strong> — La risposta a tutto. Dolce, salato, al formaggio, alla carne. Risolve qualsiasi crisi esistenziale.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🍖</span><div class="ao-text"><strong>Qofte</strong> — Polpette grigliate. Semplici, deliziose, difficili da ordinare senza ridere la prima volta.</div></div>
+        <div class="answer-option"><span class="ao-emoji">☕</span><div class="ao-text"><strong>Kafja shqiptare</strong> — Il caffè albanese. Forte quanto le decisioni che ti aspettano in ufficio.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🤷</span><div class="ao-text"><strong>L'alternativa</strong> — Punta il dito su un menu a caso. Il coraggio premia sempre.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">🗣️ Come comunico in albanese?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <p>L'albanese è una lingua isolata, unica nel suo genere. Ma non temere:</p>
+        <div class="answer-option"><span class="ao-emoji">😊</span><div class="ao-text"><strong>Sorridi e annuisci</strong> — Funziona in 196 paesi su 195.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🤌</span><div class="ao-text"><strong>Parla italiano con sicurezza</strong> — Molti albanesi capiscono l'italiano. Apprezzano l'audacia.</div></div>
+        <div class="answer-option"><span class="ao-emoji">📖</span><div class="ao-text"><strong>Vocabolario:</strong> Faleminderit = Grazie • Mirëmëngjes = Buongiorno • Po = Sì • Jo = No (la testa si muove al contrario. Davvero.)</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">🌦️ Cosa mi metto?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">🧅</span><div class="ao-text"><strong>A cipolla</strong> — Tirana ha un microclima personale firmato separatamente con il meteo europeo. Mattina fresca, pomeriggio tropicale, sera sorpresa.</div></div>
+        <div class="answer-option"><span class="ao-emoji">😎</span><div class="ao-text"><strong>Elegante ma comodo</strong> — Professionista nei meeting, esploratore nei tour. Non è possibile. Scegli e vivi con le conseguenze.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">📶 C'è il WiFi ovunque?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">📱</span><div class="ao-text"><strong>Attiva il roaming</strong> — Prima di partire, non dopo aver ordinato. La differenza è cruciale.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🏨</span><div class="ao-text"><strong>WiFi hotel</strong> — Esiste. Funziona. A volte.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🤝</span><div class="ao-text"><strong>Hotspot dal collega</strong> — La solidarietà aziendale nella sua forma più pura. Chiedi prima che finisca i giga.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">😰 Mi sono perso. E adesso?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">🎒</span><div class="ao-text"><strong>Abbraccia l'avventura</strong> — Sei su Tirana Express. Perdersi è parte del format.</div></div>
+        <div class="answer-option"><span class="ao-emoji">🗺️</span><div class="ao-text"><strong>Google Maps</strong> — Funziona anche a Tirana. Sorpresa.</div></div>
+        <div class="answer-option"><span class="ao-emoji">☕</span><div class="ao-text"><strong>Entra nel bar più vicino</strong> — Ordina un caffè. Aspetta. Qualcuno passerà. Tirana è più piccola di quanto pensi.</div></div>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">💼 Devo lavorare durante i 2 giorni?<span class="faq-arrow">▼</span></button>
+      <div class="faq-answer"><div class="faq-answer-inner">
+        <div class="answer-option"><span class="ao-emoji">📵</span><div class="ao-text"><strong>No.</strong> Hai attraversato i Balcani per questo? Disconnettiti. Il lavoro ti aspetta, Tirana no.</div></div>
+        <div class="answer-option"><span class="ao-emoji">📤</span><div class="ao-text"><strong>Se proprio devi:</strong> Delega. Vedi FAQ precedente.</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showSection('home',this)"><span class="nav-icon">🏠</span><span>Home</span></button>
+  <button class="nav-btn" onclick="showSection('day1',this)"><span class="nav-icon">☀️</span><span>Giorno 1</span></button>
+  <button class="nav-btn" onclick="showSection('day2',this)"><span class="nav-icon">🌟</span><span>Giorno 2</span></button>
+  <button class="nav-btn" onclick="showSection('faq',this)"><span class="nav-icon">❓</span><span>FAQ</span></button>
+</nav>
+<script>
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+function toggleFaq(btn){
+  var item=btn.closest('.faq-item');
+  var isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('open');});
+  if(!isOpen){item.classList.add('open');}
+}
+</script>
+</body>
+</html>
